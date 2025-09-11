@@ -7,14 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: purple
+  m_Name: yellw
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 2100000, guid: 22df4b1919789554da5191ec8236c141, type: 2}
-  m_ModifiedSerializedProperties: 2
-  m_ValidKeywords:
-  - _EMISSION
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -27,7 +26,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Glossiness: 0
+    - _Metallic: 0
     m_Colors:
-    - _Color: {r: 0.7647059, g: 0.45882353, b: 1, a: 1}
-    - _EmissionColor: {r: 0.0754717, g: 0.018155927, b: 0.018155927, a: 1}
+    - _Color: {r: 1, g: 0.84313726, b: 0.21176471, a: 1}
   m_BuildTextureStacks: []

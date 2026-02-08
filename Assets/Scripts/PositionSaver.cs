@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -98,28 +99,23 @@ namespace DefaultNamespace
 		}
 
 		private void OnDestroy()
-		{
-
-			
-
+        {
             string path = Path.Combine(Application.dataPath, "Path.txt");
-			StreamWriter writer = new StreamWriter(path);
+			StreamWriter writer = new StreamWriter(path, false);
+
 			/*foreach (var rec in Records)
 			{
 				string str = JsonUtility.ToJson(rec);
 				Debug.Log(str);
-				writer.WriteLine(str);
+				writer.Write(str);
+			//проверяла записываются ли данные списка в ассет по отдельности
 			}*/
 			
 			var str = JsonUtility.ToJson(Records);
-			Debug.Log(str);
-			writer.WriteLine(str);
-			
+            Debug.Log(str);
+			writer.Write(str);
 
-
-            writer.Close();
-			
-
+			writer.Close();
         }
 #endif
 	}

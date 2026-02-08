@@ -1,10 +1,8 @@
 ﻿using Palmmedia.ReportGenerator.Core.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using UnityEngine;
-using static DefaultNamespace.PositionSaver;
 using Debug = UnityEngine.Debug;
 
 namespace DefaultNamespace
@@ -21,7 +19,7 @@ namespace DefaultNamespace
 		[Tooltip("Create File"), ReadOnly]
 		public TextAsset _json;
 
-		[SerializeField]
+		[field: SerializeField, HideInInspector]
 		public List<Data> Records { get; private set; }
 
 

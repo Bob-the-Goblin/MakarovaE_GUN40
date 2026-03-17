@@ -6,7 +6,7 @@ using System.Diagnostics;
 using UnityEngine;
 
 
-public class CellManager : MonoBehaviour
+public class Battlefield : MonoBehaviour
 {
     private Dictionary<NeighbourType, Cell> _neigbours;
     private Cell[] _cells;

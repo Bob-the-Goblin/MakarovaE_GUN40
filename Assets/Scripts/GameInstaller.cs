@@ -1,33 +1,35 @@
-using Project;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.InputSystem;
-using Zenject;
 
+using UnityEngine;
+using Project;
+using Zenject;
 
 public class GameInstaller : MonoInstaller
 {
     [SerializeField]
     Controls _controls;
-
-    [SerializeField]
-    CellManager _cellManager;
-
-    [SerializeField]
-    CellPalletSettings _cellPalletSettings;
-
+    public Battlefield _battlefield;
+    public CellPalletSettings _cellPalletSettings;
     public override void InstallBindings()
     {
-        Container.BindInstance(_controls.Game).AsSingle();
+        _controls = new Controls();
+        _controls.Game.Enable();
 
-        _cellManager.OnCellClicked += CellManageronCellClicked;
+        _cellPalletSettings = new CellPalletSettings();
+
+        Container.BindInstance(_controls.Game).AsSingle();
+        Container.BindInstance(_battlefield).AsSingle();
+        Container.BindInstance(_cellPalletSettings).AsSingle();
+
+        _battlefield.OnCellClicked += CellManagerOnCellClicked;
     }
 
-    private void CellManageronCellClicked(Cell obj)
+    private void CellManagerOnCellClicked(Cell cell)
     {
-        obj.SetSelect(_cellPalletSettings.SelectCell);
+        cell.SetSelect(_cellPalletSettings.SelectCell);
+    }
+
+    private void OnDestroy()
+    {
+        _controls.Dispose();
     }
 }

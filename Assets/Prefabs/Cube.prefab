@@ -228,7 +228,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _focus: {fileID: 6056340547214018992}
   _select: {fileID: 468258125673423601}
-  _material: {fileID: 2100000, guid: e732f09afc1ff774391dd2758f8f06b1, type: 2}
 --- !u!1 &7901922459354640601
 GameObject:
   m_ObjectHideFlags: 0

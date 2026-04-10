@@ -3,24 +3,42 @@ using UnityEngine;
 using Project;
 using Zenject;
 
-public class GameInstaller : MonoInstaller
+public class SceneInstaller : MonoInstaller
 {
     [SerializeField]
-    Controls _controls;
-    public Battlefield _battlefield;
-    public CellPalletSettings _cellPalletSettings;
+    private Controls _controls;
+    [SerializeField]
+    private Battlefield _battlefield;
+    [SerializeField]
+    private CellPalletSettings _cellPalletSettings;
+    [SerializeField]
+    private SignalBus _signalBus;
+    [SerializeField]
+    private ISharedData _data;
+
+    private void OnEnable()
+    {
+    
+    }
     public override void InstallBindings()
     {
+        SignalBusInstaller.Install(Container);
+
+        Container.DeclareSignal<GameEvent>();
+        Container.DeclareSignal<GameStatus>();
+        
+
         _controls = new Controls();
         _controls.Game.Enable();
-
-        _cellPalletSettings = new CellPalletSettings();
 
         Container.BindInstance(_controls.Game).AsSingle();
         Container.BindInstance(_battlefield).AsSingle();
         Container.BindInstance(_cellPalletSettings).AsSingle();
+        Container.BindInstance(_data).AsSingle();
 
         _battlefield.OnCellClicked += CellManagerOnCellClicked;
+
+        
     }
 
     private void CellManagerOnCellClicked(Cell cell)

@@ -1,26 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 
+enum NeighbourType
+{
+    Forward,
+    ForwardRight,
+    Right,   
+    BackwardRight,
+    Backward, 
+    BackwardLeft,
+    Left,
+    ForwardLeft 
+}
+public enum Team
+{
+    White,
+    Black
+}
+public enum GameEvent
+{
+    Empty = 0,
+    Select,
+    Cancel,
+    Confirm
+}
 
-    enum NeighbourType
-    {
-        Forward,
-        ForwardRight,
-        Right,
-        BackwardRight,
-        Backward, 
-        BackwardLeft,
-        Left,
-        ForwardLeft
+public enum GameStatus
+{   
+    Error,
+    Lock,
+    Unlock,
+    Select,
+    Move,
+    Confirm
+}
 
-    }
-
-    enum Team
-    {
-        Player1,
-        Player2
-
-    }
+public enum ChessPieces
+{
+    Pawn,
+    Rook,
+    Knight,
+    Bishop,
+    Queen,
+    King
+}
 

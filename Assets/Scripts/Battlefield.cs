@@ -1,12 +1,11 @@
 using Project;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
+using Zenject;
 
 
-public class Battlefield : MonoBehaviour
+public class Battlefield : MonoBehaviour, IDisposable
 {
     private Dictionary<NeighbourType, Cell> _neigbours;
     private Cell[] _cells;
@@ -66,10 +65,38 @@ public class Battlefield : MonoBehaviour
         }
 
     }
+    public void Dispose()
+        {
+           for (int i = 0, iMax = _cells.Length; i < iMax; i++)
+            {
+            _cells[i].OnPointerClickEvent -= OnCellClicked;
+#if UNITY_EDITOR
+            _cells[i].OnPointerClickEvent -= DebugOnPointerClick;
+#endif
+            }
+        }
 
     private void DebugOnPointerClick(Cell cell)
     {
-        throw new NotImplementedException();
+        
+        throw new NotImplementedException();  
     }
 
+    private void CallBack(GameEvent arg)
+    {
+        foreach (Cell cell in _cells)
+        {
+            cell.ResetSelect();
+
+        }
+    }
+
+    [Inject]
+    private void Construct(SignalBus signal)
+    {
+        signal.Subscribe<GameEvent>(CallBack); 
+    }
+
+
+    
 }

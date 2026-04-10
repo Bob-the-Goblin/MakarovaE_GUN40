@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
+
+[CreateAssetMenu (fileName = "NewPalletsettings", menuName = "ScriptableObject/Pallet", order = 1)]
 public class CellPalletSettings : ScriptableObject
 {
     [field:SerializeField, Space(20f)]
@@ -21,7 +22,7 @@ public class CellPalletSettings : ScriptableObject
 
     [field: SerializeField]
     [field: Tooltip("Клетка доступная для атаки и передвижения")]
-    public Material MoveAndAttackCell { get; private set; }
+    public Material ConfirmCell { get; private set; }
 
 
 }

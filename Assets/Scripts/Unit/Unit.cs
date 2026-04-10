@@ -1,6 +1,6 @@
 using Project;
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,6 +10,11 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
     [SerializeField]
     public Cell Cell {  get; set; }
     Transform _transform;
+    public ChessPieces piece;
+    public Team team;
+    private Action OnMoveEndCallback;
+
+
     private void Awake()
     {
         _transform = GetComponent<Transform>();
@@ -31,27 +36,23 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
 
     public void Move (Cell cell)
     {
-        do
-        {if (cell.transform.position.x > _transform.position.x)
-            {
-                _transform.Translate(0.1f, 0, 0 * Time.deltaTime);
-            }
-        if (cell.transform.position.x < _transform.position.x)
-            {
-                _transform.Translate(-0.1f, 0, 0 * Time.deltaTime);
-            }
-        if (cell.transform.position.z > _transform.position.z)
-            { 
-                _transform.Translate( 0, 0, 0.1f * Time.deltaTime); 
-            }
-        if (cell.transform.position.z < _transform.position.z) ;
-            { 
-                _transform.Translate(0, 0, -0.1f * Time.deltaTime); 
-            }
-        }
-        while (_transform.position.x == cell.transform.position.x && _transform.position.z == cell.transform.position.z);
+        StartCoroutine(OnMove(cell));
+    }
 
-        //OnMoveEndCallback()
+    private IEnumerator OnMove(Cell cell)
+    {
+        var start = _transform.position;
+        var end = cell.transform.position;
+        var time = 0f;
+        var delta = 1f;
+        end.y = -1;
+        while (time < delta)
+        {
+            _transform.position = Vector3.Lerp(start, end, time/delta);
+            time+= Time.deltaTime;
+            yield return null;
+        }
+        OnMoveEndCallback?.Invoke();
     }
 
 

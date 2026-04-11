@@ -1,6 +1,6 @@
 
 
-enum NeighbourType
+public enum NeighbourType
 {
     Forward,
     ForwardRight,
@@ -43,4 +43,6 @@ public enum ChessPieces
     Queen,
     King
 }
+
+
 

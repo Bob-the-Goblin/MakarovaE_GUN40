@@ -5,7 +5,8 @@ using UnityEngine;
 
 public interface IGameplayCommand 
 {
-   private void Interact (Cell cell)
+   public IEnumerable<Cell> Variants {  get; }
+   public void Interact (Cell cell)
     { 
     }
 }

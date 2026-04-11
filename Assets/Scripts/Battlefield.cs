@@ -4,19 +4,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-
 public class Battlefield : MonoBehaviour, IDisposable
 {
-    private Dictionary<NeighbourType, Cell> _neigbours;
+    private Dictionary<CellNeighbour, Cell> _neigbours;
     private Cell[] _cells;
     private Unit[] _units;
+    private ISharedData _data;
+    private CellPalletSettings _pallets;
+    [Inject]
+    private IGameplayCommand _command;
 
     public event Action<Cell> OnCellClicked;
 
+    public bool TryGet (Cell source, NeighbourType type, out Cell cell)
+    {
+        var data = new CellNeighbour(type, source); 
+        return _neigbours.TryGetValue(data, out cell);
+    }
+
     private void Awake()
     {
-        _cells = FindObjectsOfType<Cell>();
-        _neigbours = new Dictionary<NeighbourType, Cell>(_cells.Length * 8);
+        _cells = UnityEngine.Object.FindObjectsOfType<Cell>();
+        _neigbours = new Dictionary<CellNeighbour, Cell>(_cells.Length * 8);
         var positions = Array.ConvertAll(_cells, t => t.transform.position);
         var distance = 0f;
         for (int i = 0, iMax = _cells.Length; i < iMax; i ++)
@@ -46,10 +55,17 @@ public class Battlefield : MonoBehaviour, IDisposable
                     (-1, -1) => NeighbourType.BackwardLeft,
                     _ => default
                 };
+                var key = new CellNeighbour(type, _cells[i]);
+                var check = _neigbours.TryGetValue(key, out var cell)
+                ? Vector3.Distance(source, cell.transform.position)
+                : float.MaxValue;
+                distance = Vector3.Distance(source, destination);
+                if (distance < check)
+                    _neigbours[key] = _cells[i];
             }
 
         }
-        _units = FindObjectsOfType<Unit>();
+        _units = UnityEngine.Object.FindObjectsOfType<Unit>();
         for (int i = 0, iMax = _units.Length; i < iMax; i++)
         {
             for (int j = 0, jMax = _cells.Length; j < jMax; j ++)
@@ -79,7 +95,7 @@ public class Battlefield : MonoBehaviour, IDisposable
     private void DebugOnPointerClick(Cell cell)
     {
         
-        throw new NotImplementedException();  
+         
     }
 
     private void CallBack(GameEvent arg)
@@ -87,16 +103,55 @@ public class Battlefield : MonoBehaviour, IDisposable
         foreach (Cell cell in _cells)
         {
             cell.ResetSelect();
-
         }
+        if (_data.Destination != null)
+        { _data.Destination.Cell.SetSelect(_pallets.SelectCell); }
+
+        var mat = _data.Status switch
+        {
+            GameStatus.Move => _pallets.MoveCell,
+            _ => default(Material)
+        };
+
+        if (mat != null)
+        {
+            foreach (var cell in _command.Variants)
+            { 
+                cell.SetSelect(mat);
+            }
+        }
+        if (_data.Target != null)
+        { _data.Destination.Cell.SetSelect(_pallets.ConfirmCell); }
+
+
     }
 
-    [Inject]
-    private void Construct(SignalBus signal)
+    Battlefield(SignalBus signal, ISharedData data, CellPalletSettings cellPallet)
     {
+        (_data, _pallets) = (data, cellPallet);
         signal.Subscribe<GameEvent>(CallBack); 
     }
 
+    private struct CellNeighbour : IEquatable<CellNeighbour>
+    {
+        private readonly NeighbourType _type;
+        private readonly Cell _value;
 
-    
+        public CellNeighbour( NeighbourType type, Cell value )
+        {  _type = type; _value = value;}
+
+        public bool Equals(CellNeighbour other)
+            => _type == other._type && Equals(_value, other._value);
+
+        public override bool Equals(object obj)
+        {
+            return obj is CellNeighbour other && Equals(other);
+        }
+        public override int GetHashCode()
+        {
+            return unchecked(HashCode.Combine(_type, _value) - 13);
+        }
+        
+    }
+     
 }

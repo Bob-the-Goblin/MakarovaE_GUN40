@@ -1,9 +1,9 @@
 using Project;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
 
 public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
@@ -12,13 +12,16 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
     Transform _transform;
     public ChessPieces piece;
     public Team team;
-    private Action OnMoveEndCallback;
+    public Action OnMoveEndCallback;
+    private Dictionary<NeighbourType, Cell> _neighboursCell = new Dictionary<NeighbourType, Cell>(8);
 
-
+    
     private void Awake()
     {
+      
         _transform = GetComponent<Transform>();
     }
+    
     public void OnPointerClick(PointerEventData eventData)
     {
         Cell.OnPointerClick(eventData);
@@ -52,8 +55,9 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
             time+= Time.deltaTime;
             yield return null;
         }
+        Cell = cell;
         OnMoveEndCallback?.Invoke();
     }
 
-
+   
 }

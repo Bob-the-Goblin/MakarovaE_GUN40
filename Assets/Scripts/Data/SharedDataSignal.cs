@@ -10,6 +10,8 @@ public class SharedDataSignal : ISharedData
     private bool _lock;
     private GameEvent _event;
     private GameStatus _status;
+    private Unit _destination;
+    private Cell _target;
 
     public bool Lock 
     {
@@ -43,7 +45,6 @@ public class SharedDataSignal : ISharedData
             _signal.Fire(value);
         }
     }
-
 
     public Unit Destination { get ; set ; }
     public Cell Target { get ; set ; }

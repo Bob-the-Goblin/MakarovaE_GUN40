@@ -26,14 +26,6 @@ public class InputManager : MonoBehaviour
     {
         _controls.Game.Enable();
     }
-    void Start()
-    {
-    }
-    void Update()
-    {
-        
-    }
-
     private void Restart_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         image.fillAmount = 0;

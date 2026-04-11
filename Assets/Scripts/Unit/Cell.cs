@@ -38,6 +38,12 @@ namespace Project
             _focus.enabled = false;
         }
 
-
+        public bool IsEmpty()
+        {
+            if (unit == null) { return true; }
+            else { return false; }
+        }
+        
     }
 }
+

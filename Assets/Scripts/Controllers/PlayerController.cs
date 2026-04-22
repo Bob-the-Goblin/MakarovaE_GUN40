@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private ISharedData _data;
 
     [Inject]
-    private void Construct(SignalBus signal, ISharedData data)
+    public void Construct(SignalBus signal, ISharedData data)
     {  _signal = signal; _data = data;
         _signal.Subscribe<GameEvent>(StartPlay);
     }

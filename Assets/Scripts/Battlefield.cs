@@ -2,6 +2,7 @@ using Project;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Zenject;
 
 public class Battlefield : MonoBehaviour, IDisposable
@@ -13,7 +14,10 @@ public class Battlefield : MonoBehaviour, IDisposable
     private CellPalletSettings _pallets;
     [Inject]
     private IGameplayCommand _command;
+    [SerializeField]
+    public UnityEngine.UI.Image _imageForTest;
 
+    
     public event Action<Cell> OnCellClicked;
 
     public bool TryGet (Cell source, NeighbourType type, out Cell cell)
@@ -95,6 +99,23 @@ public class Battlefield : MonoBehaviour, IDisposable
     private void DebugOnPointerClick(Cell cell)
     {
         
+        if (_data.Status == null)
+        {
+            _imageForTest.color = Color.black;
+            return;
+        }
+        else
+            switch (_data.Status)
+            {
+                case GameStatus.Error: _imageForTest.color = Color.magenta; break;
+                case GameStatus.Lock: _imageForTest.color = Color.blue; break;
+                case GameStatus.Unlock: _imageForTest.color = Color.gray; break;
+                case GameStatus.Select: _imageForTest.color = Color.green; break;
+                case GameStatus.Move: _imageForTest.color = Color.cyan; break;
+                case GameStatus.Confirm: _imageForTest.color = Color.yellow; break;
+                default: _imageForTest.color = Color.red; break;
+
+            }
          
     }
 
@@ -122,15 +143,9 @@ public class Battlefield : MonoBehaviour, IDisposable
         }
         if (_data.Target != null)
         { _data.Destination.Cell.SetSelect(_pallets.ConfirmCell); }
-
-
     }
 
-    Battlefield(SignalBus signal, ISharedData data, CellPalletSettings cellPallet)
-    {
-        (_data, _pallets) = (data, cellPallet);
-        signal.Subscribe<GameEvent>(CallBack); 
-    }
+  
 
     private struct CellNeighbour : IEquatable<CellNeighbour>
     {
@@ -152,6 +167,15 @@ public class Battlefield : MonoBehaviour, IDisposable
             return unchecked(HashCode.Combine(_type, _value) - 13);
         }
         
+    }
+
+    [Inject]
+    public void Construct(SignalBus signal, ISharedData data, CellPalletSettings settings)
+    {
+        _data = data;
+        _pallets = settings;
+
+        signal.Subscribe<GameEvent>(CallBack);
     }
      
 }

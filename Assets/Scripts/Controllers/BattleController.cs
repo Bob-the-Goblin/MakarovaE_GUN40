@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
-public class BattleController : MonoBehaviour
+public class BattleController
 {
     private SignalBus _signal;
     private ISharedData _data;
@@ -31,6 +31,7 @@ public class BattleController : MonoBehaviour
 
     private void Callback(GameEvent arg)
     {
+        /*
         if (arg is not GameEvent.Select)
             return;
         switch (_data.Status)
@@ -39,6 +40,7 @@ public class BattleController : MonoBehaviour
             case GameStatus.Move: _signal.Fire(GameStatus.Confirm); break;
             case GameStatus.Confirm: Debug.Log("Incorrect value"); break;
         }
+        */
     }
 
     [Inject]

@@ -6,6 +6,7 @@ using Zenject;
 
 public class SharedDataSignal : ISharedData
 {
+    [SerializeField]
     private SignalBus _signal;
     private bool _lock;
     private GameEvent _event;
@@ -48,5 +49,5 @@ public class SharedDataSignal : ISharedData
 
     public Unit Destination { get ; set ; }
     public Cell Target { get ; set ; }
-    
+
 }

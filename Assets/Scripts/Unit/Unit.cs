@@ -9,6 +9,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
 {
     [SerializeField]
     public Cell Cell {  get; set; }
+
     Transform _transform;
     public ChessPieces piece;
     public Team team;

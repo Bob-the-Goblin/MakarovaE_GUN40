@@ -16,16 +16,30 @@ public class Command : IGameplayCommand
 
     public IEnumerable<Cell> Variants  => _set; 
 
-    private void Interact(Cell cell)
+    public void Interact(Cell cell)
     {
-        if (_data.Status == GameStatus.Select)
+        _data.Status = GameStatus.Select;
+        Debug.Log($"Set Status Select");
+        _signal.Fire(GameStatus.Select);
+        _data.Target = cell;
+        if (_data.Target.unit != null)
+        {
+            _data.Destination = cell.unit;
+            _data.Status = GameStatus.Move;
+            _signal.Fire(GameStatus.Move);
+            _data.Event = GameEvent.Select;
+            _signal.Fire(GameEvent.Select);
+        }
+
+        /*
+        if (_data.Status != null)
         {
             if (cell.IsEmpty())
             { _data.Target = cell; }
             else 
             {
                 _data.Destination = cell.unit; 
-                _data.Status = GameStatus.Move;
+                _signal.Fire(GameStatus.Move);
                 switch (_data.Destination.piece)
                 {
                     case ChessPieces.Pawn:
@@ -41,15 +55,18 @@ public class Command : IGameplayCommand
                         AvailableVariantsForBishop();
                         break;
                     case ChessPieces.Queen:
-                        throw new System.Exception("Method Not ready");
                         break;
                     case ChessPieces.King:
                         AvailacleVariantsForKing();
                         break;
-                        default: return;
+                        
                 }
-                return;
+                
             }
+            _data.Status = GameStatus.Move;
+            _signal.Fire(GameStatus.Move);
+            return;
+
         }
         if (_data.Status == GameStatus.Move)
         {
@@ -59,6 +76,9 @@ public class Command : IGameplayCommand
                 _data.Status = GameStatus.Confirm;
             }
         }
+        */
+
+
     }
     private bool CheckIsCanBeAttack(Cell cell)
     {

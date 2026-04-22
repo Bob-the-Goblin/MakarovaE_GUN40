@@ -7,7 +7,7 @@ using System.Linq;
 
 public class SceneInstaller : MonoInstaller
 {
-    [SerializeField]
+    [field: SerializeField]
     private Controls _controls;
     [SerializeField]
     private Battlefield _battlefield;
@@ -42,13 +42,10 @@ public class SceneInstaller : MonoInstaller
         var units = FindObjectsOfType<Unit>();
         Container.BindInstance(units).AsSingle();
 
-        var teams = units.Select(t => t.team).Distinct().ToList();
-        teams.Sort();
         Container.Bind<ITeam>().To<White_Black>().AsSingle();
         Container.Bind<ISharedData>().To<SharedDataSignal>().AsSingle();
         Container.Bind<IGameplayCommand>().To<Command>().AsSingle();
-
-        
+   
     }
 
     private void CellManagerOnCellClicked(Cell cell)

@@ -4,6 +4,7 @@ using Project;
 using Zenject;
 using System.ComponentModel;
 using System.Linq;
+using UnityEngine.UIElements;
 
 public class SceneInstaller : MonoInstaller
 {
@@ -21,31 +22,36 @@ public class SceneInstaller : MonoInstaller
     private IGameplayCommand _command;
     [SerializeField]
     private ITeam _team;
+    [SerializeField]
+    BattleController _battleController;
+    [SerializeField]
+    PlayerController _playerController;
+    
+  
     public override void InstallBindings()
     {
         SignalBusInstaller.Install(Container);
 
         Container.DeclareSignal<GameEvent>();
         Container.DeclareSignal<GameStatus>();
-        Container.DeclareSignal<ITeam>();
+        Container.DeclareSignal<Team>();
 
         _controls = new Controls();
         _controls.Game.Enable();
         Container.BindInstance(_controls.Game).AsSingle();
-
+        
         _battlefield = FindObjectOfType<Battlefield>();
+        _battlefield.OnCellClicked += CellManagerOnCellClicked;
+
         Container.BindInstance(_battlefield).AsSingle();
         Container.BindInstance(_cellPalletSettings).AsSingle();
 
-        _battlefield.OnCellClicked += CellManagerOnCellClicked;
-
-        var units = FindObjectsOfType<Unit>();
-        Container.BindInstance(units).AsSingle();
+        Container.BindInstance(_playerController).AsSingle();
 
         Container.Bind<ITeam>().To<White_Black>().AsSingle();
         Container.Bind<ISharedData>().To<SharedDataSignal>().AsSingle();
         Container.Bind<IGameplayCommand>().To<Command>().AsSingle();
-   
+
     }
 
     private void CellManagerOnCellClicked(Cell cell)

@@ -14,6 +14,7 @@ public class Battlefield : MonoBehaviour, IDisposable
     private CellPalletSettings _pallets;
     [Inject]
     private IGameplayCommand _command;
+    private SignalBus _signalBus;
     [SerializeField]
     public UnityEngine.UI.Image _imageForTest;
 
@@ -94,17 +95,11 @@ public class Battlefield : MonoBehaviour, IDisposable
             _cells[i].OnPointerClickEvent -= DebugOnPointerClick;
 #endif
             }
+        _signalBus.Unsubscribe<GameEvent>(CallBack);
         }
 
     private void DebugOnPointerClick(Cell cell)
     {
-        
-        if (_data.Status == null)
-        {
-            _imageForTest.color = Color.black;
-            return;
-        }
-        else
             switch (_data.Status)
             {
                 case GameStatus.Error: _imageForTest.color = Color.magenta; break;
@@ -114,9 +109,7 @@ public class Battlefield : MonoBehaviour, IDisposable
                 case GameStatus.Move: _imageForTest.color = Color.cyan; break;
                 case GameStatus.Confirm: _imageForTest.color = Color.yellow; break;
                 default: _imageForTest.color = Color.red; break;
-
-            }
-         
+            }   
     }
 
     private void CallBack(GameEvent arg)
@@ -128,24 +121,22 @@ public class Battlefield : MonoBehaviour, IDisposable
         if (_data.Destination != null)
         { _data.Destination.Cell.SetSelect(_pallets.SelectCell); }
 
-        var mat = _data.Status switch
-        {
-            GameStatus.Move => _pallets.MoveCell,
-            _ => default(Material)
-        };
-
-        if (mat != null)
+        if (_data.Status == GameStatus.Move)
         {
             foreach (var cell in _command.Variants)
-            { 
-                cell.SetSelect(mat);
+            {
+                if (cell.unit != null) cell.SetSelect(_pallets.AttackCell);
+                cell.SetSelect(_pallets.SelectCell);
             }
         }
+
         if (_data.Target != null)
-        { _data.Destination.Cell.SetSelect(_pallets.ConfirmCell); }
+        { 
+            _data.Destination.Cell.SetSelect(_pallets.ConfirmCell);
+            _data.Target.SetSelect(_pallets.ConfirmCell);
+        }
     }
 
-  
 
     private struct CellNeighbour : IEquatable<CellNeighbour>
     {
@@ -170,12 +161,18 @@ public class Battlefield : MonoBehaviour, IDisposable
     }
 
     [Inject]
-    public void Construct(SignalBus signal, ISharedData data, CellPalletSettings settings)
+    private void Construct(SignalBus signal, ISharedData data, CellPalletSettings settings)
     {
         _data = data;
         _pallets = settings;
+        _signalBus = signal;
 
-        signal.Subscribe<GameEvent>(CallBack);
+        _signalBus.Subscribe<GameEvent>(CallBack);
+
+        _data.Status = GameStatus.Unlock;
+        
+
     }
-     
+
+   
 }

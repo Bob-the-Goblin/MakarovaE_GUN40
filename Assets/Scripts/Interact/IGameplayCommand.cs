@@ -9,4 +9,5 @@ public interface IGameplayCommand
    public void Interact (Cell cell)
     { 
     }
+    public void ClearSet() { }
 }

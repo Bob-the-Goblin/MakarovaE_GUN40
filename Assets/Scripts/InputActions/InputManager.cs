@@ -6,7 +6,8 @@ using Project;
 
 public class InputManager : MonoBehaviour
 {
-    Controls _controls;
+    [SerializeField]
+    private Controls _controls;
 
     [SerializeField]
     private Image image;

@@ -27,11 +27,14 @@ public class SharedDataSignal : ISharedData
     public GameEvent Event 
     { get => _event ; 
       set 
-        { 
-            if (_event == value ) Debug.Log($"GameEven repeat:{value}"); 
-            Debug.Log($"New GameEvent: {value}");
-            _event = value; 
-            _signal.Fire(value);      
+        {
+            if (_event == value) Debug.Log($"GameEven repeat:{value}");
+            else
+            {
+                Debug.Log($"New GameEvent: {value}");
+                _event = value;
+                _signal.Fire(value);
+            }
         }
         
     }
@@ -41,13 +44,22 @@ public class SharedDataSignal : ISharedData
         set
         {
             if (_status == value) Debug.Log($"Game repeat:{value}");
-            Debug.Log($"New GameStatus: {value}");
-            _status = value;
-            _signal.Fire(value);
+            else
+            {
+                Debug.Log($"New GameStatus: {value}");
+                _status = value;
+                _signal.Fire(value);
+            }
         }
     }
 
     public Unit Destination { get ; set ; }
     public Cell Target { get ; set ; }
+
+    [Inject]
+    private void Construct(SignalBus signal)
+    {
+        _signal = signal;
+    }
 
 }

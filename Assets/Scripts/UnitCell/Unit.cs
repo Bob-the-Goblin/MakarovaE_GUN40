@@ -40,13 +40,19 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
 
     public void Move (Cell cell)
     {
-        StartCoroutine(OnMove(cell));
+        _transform.position = cell.transform.position + new Vector3(0,1.2f,0);
+        OnMoveEndCallback?.Invoke();
+        var before = Cell;
+        Cell = cell;
+        Cell.unit = this;
+        before.unit = null;
+        //StartCoroutine(OnMove(cell));
     }
 
     private IEnumerator OnMove(Cell cell)
     {
         var start = _transform.position;
-        var end = cell.transform.position;
+        var end = cell.transform.position + new Vector3(0,2,0);
         var time = 0f;
         var delta = 1f;
         end.y = -1;

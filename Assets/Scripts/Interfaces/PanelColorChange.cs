@@ -1,7 +1,5 @@
 using UnityEngine;
 using Zenject;
-using UnityEngine.UIElements;
-using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 
 public class PanelColorChange : MonoBehaviour
@@ -26,16 +24,16 @@ public class PanelColorChange : MonoBehaviour
         }
     }
     [Inject]
-    private void Construct(ITeam team, SignalBus signal)
+    private void Construct( SignalBus signal)
     {
-        _team = team;
         _signal = signal;
 
-        _signal.Subscribe<ITeam>(ChangeImage);
+        _signal.Subscribe<Team>(ChangeImage);
+
     }
     private void OnDisable()
     {
-        _signal.Unsubscribe<ITeam>(ChangeImage);
+        _signal.Unsubscribe<Team>(ChangeImage);
     }
 
 

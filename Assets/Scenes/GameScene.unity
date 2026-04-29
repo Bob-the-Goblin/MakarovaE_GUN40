@@ -3477,7 +3477,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 790406968}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -7109,6 +7109,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2345151727071816079, guid: c69295d26f3ed524a9000dfe32a5ee11, type: 3}
   m_PrefabInstance: {fileID: 1487358083}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1498873606
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1498873609}
+  - component: {fileID: 1498873608}
+  - component: {fileID: 1498873607}
+  m_Layer: 0
+  m_Name: Controllers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1498873607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1498873606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22204966aaf134d4e83f549ca3f38604, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1498873608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1498873606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e51eaaf4701a147887826cd2fc7cf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1498873609
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1498873606}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 150.92789, y: 221.64354, z: 255.47714}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1500374729
 GameObject:
   m_ObjectHideFlags: 0
@@ -9804,6 +9861,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _battlefield: {fileID: 1203004038}
   _cellPalletSettings: {fileID: 11400000, guid: a48f0a78a341a6e4a986218b9a3aaacf, type: 2}
+  _battleController: {fileID: 0}
+  _playerController: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -9815,3 +9874,4 @@ SceneRoots:
   - {fileID: 2073466586}
   - {fileID: 855637492}
   - {fileID: 1842670981}
+  - {fileID: 1498873609}

@@ -1,35 +1,70 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragAndDropBall : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class DragAndDropBall : MonoBehaviour
 {
+
     private Transform _transform;
     private Rigidbody _rb;
     private Vector3 _mousePos;
+    private Object _thisObject;
+
+
+    private float _maxForce;
+    //не придумала
+    public float ForceThrow
+    {
+        get => forceThrow;
+        set
+        {
+            if (value < _maxForce)
+            { _forcePower = value; }
+        }
+
+    }
+    private float _forcePower;
+    private float forceThrow;
+    private bool _isWasThrow;
+
     private void Awake()
     {
         _transform = transform;
-        _rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();   
+        _thisObject = GetComponent<Object>();
+        _isWasThrow = false;
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+    private void OnMouseDown()
     {
-        
+        _mousePos = Input.mousePosition - GetMousePos();
     }
 
-    public void OnDrag(PointerEventData eventData)
+    private void OnMouseDrag()
     {
-        
+        //transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition - _mousePos );
+        _forcePower = 0.5f;
+        if (!_isWasThrow)
+        {
+            _rb.AddForce(-Camera.main.ScreenToWorldPoint(Input.mousePosition + _mousePos) * _forcePower);
+        }
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    private void OnMouseUp()
     {
-        Debug.Log("End");
+        _isWasThrow = true;
     }
+
+
+
+
 
     private Vector3 GetMousePos()
-    { return Camera.main.WorldToScreenPoint(transform.position); }
+    { 
+        return Camera.main.WorldToScreenPoint(_transform.position); 
+    }
+
 }

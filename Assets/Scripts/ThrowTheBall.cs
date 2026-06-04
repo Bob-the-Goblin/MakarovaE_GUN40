@@ -1,22 +1,17 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using Zenject;
 
 public class ThrowTheBall : MonoBehaviour, IPointerClickHandler
-{
-    private float _forcePower;
+{//попытка реализовать бросок м€ча по клику, не упела
     [SerializeField]
     private float _maxForce;
+    private float _forcePower;
+
     private Vector3 _mousePos;
+    private DataInGame _data;
 
-
-    private void Awake()
-    {
-
-    }
     void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.Mouse0))
@@ -26,7 +21,6 @@ public class ThrowTheBall : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         _mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
         Debug.Log("click");
         _forcePower = 0;
     }
@@ -44,5 +38,11 @@ public class ThrowTheBall : MonoBehaviour, IPointerClickHandler
         }
         else { yield return new WaitForSeconds(10f); }
 
+    }
+
+    [Inject]
+    private void Counstruct(DataInGame data)
+    { 
+        _data = data;
     }
 }

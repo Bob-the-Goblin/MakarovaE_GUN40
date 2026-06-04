@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
+using Zenject;
+
 
 public class StartPoint : MonoBehaviour
 {
@@ -10,30 +10,39 @@ public class StartPoint : MonoBehaviour
     private Object _prefabOfBall;
     [SerializeField]
     private float _timeBeforeDestroy;
-
     [SerializeField]
     private Object _arrovPrefab;
-    private Transform _transform;
+
+    private Transform _pointTransform;
     private Object _actualBall;
+    private DataInGame _data;
+    private DragAndDropBall _dragScript;
 
     private void Awake()
     {
-        _transform = GetComponent<Transform>();
+        _pointTransform = GetComponent<Transform>();
     }
     void Start()
     {
-        _actualBall = Instantiate(_arrovPrefab, _transform.position + new Vector3(0, 0, 0.5f), transform.rotation);
+         Instantiate(_arrovPrefab, _pointTransform.position + new Vector3(0, 0, 0.1f), transform.rotation);
+
         //DragAndDropBall  ball = _actualBall.GetComponent<DragAndDropBall>();
         //ball.enabled = false;
-        Instantiate(_prefabOfBall, _transform.position, _transform.rotation);
+        _actualBall =Instantiate(_prefabOfBall, _pointTransform.position, _pointTransform.rotation);
+        SavingToData(_actualBall);
+
     }
-    private void Update()
+
+    private void SavingToData(UnityEngine.Object prefab)
     {
-        
+        _data.ActuallBall = prefab;
     }
 
-
-
-
+    [Inject]
+    private void Counstruction(DataInGame data)
+    {
+        _data = data;
+    }
+    
 }
 

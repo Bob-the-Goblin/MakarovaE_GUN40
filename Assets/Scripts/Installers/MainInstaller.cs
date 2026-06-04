@@ -6,9 +6,13 @@ using Zenject;
 public class MainInstaller : MonoInstaller
 {
     private DataInGame _gameData;
+    private EventSkittlesFall _eventOfFall;
+    private UIScore _uiScore;
+    
 
     public override void InstallBindings()
     {
-        Container.BindInstance<DataInGame>(_gameData).AsSingle();
+        _gameData = new DataInGame();
+        Container.BindInstance(_gameData).AsSingle();
     }
 }

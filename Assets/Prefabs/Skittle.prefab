@@ -94,7 +94,10 @@ GameObject:
   - component: {fileID: 5864499301031080296}
   - component: {fileID: 5051446573746943466}
   - component: {fileID: 6931102027462767949}
-  - component: {fileID: 3954406008813911771}
+  - component: {fileID: 5547188065227694619}
+  - component: {fileID: 4408934265830645604}
+  - component: {fileID: 3698887825871059775}
+  - component: {fileID: 5723410707028606155}
   m_Layer: 0
   m_Name: Skittle
   m_TagString: Untagged
@@ -112,8 +115,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.5, z: -6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8948358355112928342}
   - {fileID: 5516350897316589039}
@@ -167,10 +170,64 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2.8578272
+  m_Height: 1.9962591
   m_Direction: 1
-  m_Center: {x: 0, y: -0.07891369, z: 0}
---- !u!65 &3954406008813911771
+  m_Center: {x: 0, y: -0.49812838, z: 0}
+--- !u!135 &5547188065227694619
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3463329732581809168}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!135 &4408934265830645604
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3463329732581809168}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.35
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &3698887825871059775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3463329732581809168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 250a0c6b610706a49a45a56f313aaf7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &5723410707028606155
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -189,8 +246,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.6, y: 1.0017254, z: 0.6}
-  m_Center: {x: 0, y: -1.0008636, z: 0}
+  m_Size: {x: 0.4, y: 2.5, z: 0.4}
+  m_Center: {x: 0, y: -0.25, z: 0}
 --- !u!1 &5483884261069956922
 GameObject:
   m_ObjectHideFlags: 0

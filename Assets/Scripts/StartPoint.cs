@@ -1,4 +1,5 @@
 
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
@@ -14,28 +15,29 @@ public class StartPoint : MonoBehaviour
     private Object _arrovPrefab;
 
     private Transform _pointTransform;
-    private Object _actualBall;
+    private GameObject _actualBall;
     private DataInGame _data;
     private DragAndDropBall _dragScript;
 
     private void Awake()
     {
-        _pointTransform = GetComponent<Transform>();
+        _pointTransform = transform;
     }
     void Start()
     {
          Instantiate(_arrovPrefab, _pointTransform.position + new Vector3(0, 0, 0.1f), transform.rotation);
-
-        //DragAndDropBall  ball = _actualBall.GetComponent<DragAndDropBall>();
-        //ball.enabled = false;
-        _actualBall =Instantiate(_prefabOfBall, _pointTransform.position, _pointTransform.rotation);
-        SavingToData(_actualBall);
-
     }
 
-    private void SavingToData(UnityEngine.Object prefab)
+    public void FirstSavingData()
     {
-        _data.ActuallBall = prefab;
+        _data.Cast = 1;
+        _data.Frame = 1;
+    }
+    public GameObject SpawnBall(GameObject prefab)
+    {
+        _actualBall = Instantiate (prefab, _pointTransform.position, _pointTransform.rotation);
+        _data.ActuallBall = _actualBall;
+        return _actualBall;
     }
 
     [Inject]

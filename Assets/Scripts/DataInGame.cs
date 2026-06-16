@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class DataInGame : ScriptableObject
 {
-    private Object _actuallBall;
+    private GameObject _actuallBall;
     private bool _isDragAndDrop;
-    private bool _isClicked;
+    private int _frame;
+    private int _cast;
+    private int _totalScore;
   
-
-    public Object ActuallBall
+    public GameObject ActuallBall
     {
         get { return _actuallBall; }
         set { _actuallBall = value; }
@@ -23,18 +24,34 @@ public class DataInGame : ScriptableObject
             Debug.Log($"It's DragAnddrop {_isDragAndDrop}");
         }
     }
-    public bool IsClicked
+    public int Frame
     {
-        get { return _isClicked; }
+        get { return _frame; }
         set
-        {
-            Debug.Log($"It's set clicked - {_isClicked}");
-            _isClicked = value;
+        {   
+            if (_frame < 10 )
+            { _frame ++; }
+            else { _frame = 1; }
         }
-
+    }
+    public int Cast
+    {
+        get { return _cast; }
+        set
+        {   
+            if (_cast < 2)
+                { _cast ++;}
+            else {_cast = 1; }
+        }
+    }
+    public int TotalScore
+    {
+        get { return _totalScore; }
+        set { _totalScore = value; }
     }
 
-
- 
-
+    private DataInGame()
+    {
+        _totalScore = 0;
+    }
 }

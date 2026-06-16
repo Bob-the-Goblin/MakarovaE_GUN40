@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using Zenject;
 
 public class DragAndDropBall : MonoBehaviour
 {
@@ -16,6 +14,8 @@ public class DragAndDropBall : MonoBehaviour
     private float _forcePower;
     
     bool _itWasDragging;
+    public delegate void EventHandler();
+    public event EventHandler OnBallWasDrag;
 
     private void Awake()
     {
@@ -26,24 +26,32 @@ public class DragAndDropBall : MonoBehaviour
     private void OnMouseDown()
     {
         _mousePos = Input.mousePosition - GetMousePos();
+        
     }
     private void OnMouseDrag()
     {
-        //transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition - _mousePos );
-        _forcePower = 0.5f;
         if (!_itWasDragging)
         {
-            _rb.AddForce(-Camera.main.ScreenToWorldPoint(Input.mousePosition + _mousePos) * _forcePower);
+           _rb.AddForce(-Camera.main.ScreenToWorldPoint(Input.mousePosition + _mousePos) * _forcePower);
         }
     }
     private void OnMouseUp()
     {
         if (!_itWasDragging)
-        { _itWasDragging = true; }
+        { _itWasDragging = true;
+            OnBallWasDrag?.Invoke();
+        }
     }
     private Vector3 GetMousePos()
     { 
         return Camera.main.WorldToScreenPoint(_transform.position); 
     }
-    
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other is MeshCollider)
+        { 
+            _rb.velocity = Vector3.zero;
+        }
+    }
 }

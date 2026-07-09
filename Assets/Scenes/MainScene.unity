@@ -879,8 +879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e161143aa9517048806005712f3008c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 0}
-  _obstacle: {fileID: 0}
+  _targets: []
 --- !u!114 &200898040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -918,7 +917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 0.05
-  _distanceOfMove: 5
+  _distanceOfMove: 8
   _distanceOfView: 12
   _timeForCkeackingEnviropment: 0.1
   _layerMask:
@@ -2755,7 +2754,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2577291058774222126, guid: f76d1dfe4bb2731409ff1c6083041448, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.25
+      value: -8.75
       objectReference: {fileID: 0}
     - target: {fileID: 2577291058774222126, guid: f76d1dfe4bb2731409ff1c6083041448, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2763,7 +2762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2577291058774222126, guid: f76d1dfe4bb2731409ff1c6083041448, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -14.25
+      value: -12.25
       objectReference: {fileID: 0}
     - target: {fileID: 2577291058774222126, guid: f76d1dfe4bb2731409ff1c6083041448, type: 3}
       propertyPath: m_LocalRotation.w

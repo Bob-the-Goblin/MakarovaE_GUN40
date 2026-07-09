@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,10 +11,15 @@ public class RobotCleaner : MonoBehaviour
     //Vectors for Physics.Raycast
     private Vector3[] vectors = new Vector3[3] {Vector3.forward, Vector3.right, -Vector3.right};
 
+    public List<Collider> _targets;
+    
+    private Collider[] _colliders;
+    
 
-    //for FindWay
-    public Transform _target;
-    public Transform _obstacle;
+    public Transform Obstacle
+    { get { return _obstacle; } set => _obstacle = value; }
+    private Transform _obstacle;
+
 
   
     private IEnumerator CheackEnviropment()
@@ -31,22 +37,28 @@ public class RobotCleaner : MonoBehaviour
                 { 
                     obj = hit.transform.gameObject;
 
-                    if ((_settings.LayerMask.value & (1 << obj.layer)) != 0)
-                    {
-                        _target = hit.transform;
-                        Debug.Log("CheackEnviropment find target");
-                    }
-                    else
-                    {
+                    if ((_settings.LayerMask.value & (1 << obj.layer)) == 0)
+                    { 
                         Debug.Log("CheackEnviropment find Obstacle");
                         if (Mathf.Abs(transform.position.x - hit.transform.position.x) < 5 || Mathf.Abs(transform.position.z - hit.transform.position.z)  < 5)
                         {
-                            _obstacle = hit.transform;
+                            Obstacle = hit.transform;
                             _settings.InMove = false;
                         }
                     }
                  }           
             }
+            _colliders = Physics.OverlapSphere(transform.position, _settings.DistanceOfView, _settings.LayerMask.value);
+            for (int i = 0; i < _colliders.Length; i++)
+            { 
+                if (!_targets.Contains(_colliders[i]))
+                {
+                    Debug.Log($"Find target in Sphere - {_colliders[i].name}");
+                    _targets.Add(_colliders[i]);
+                } 
+                
+            }
+            Array.Clear(_colliders, 0, _colliders.Length);
             
             yield return new WaitForSeconds(_settings.TimeForCkeackingEnviropment);
         }
@@ -54,15 +66,16 @@ public class RobotCleaner : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.transform == _target || ((_settings.LayerMask.value & (1 << other.gameObject.layer)) != 0))
+        if (_targets.Contains(other))
         {
             Destroy(other.gameObject);
+            _targets.Remove(other);
             Debug.Log("trigerr on trash. destroy it.");
         }
         else
         {
             Debug.Log("Can't go. Trigger on obstacle");
-            _obstacle = other.gameObject.transform;
+            Obstacle = other.gameObject.transform;
             
         }
 

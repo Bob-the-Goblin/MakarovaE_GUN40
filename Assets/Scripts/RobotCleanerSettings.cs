@@ -53,6 +53,7 @@ public class RobotCleanerSettings : MonoBehaviour
         Vector3 vectorForward = Vector3.forward * DistanceOfView;
 
         Gizmos.DrawLine(transform.position, transform.position + vectorForward);
+        Gizmos.DrawWireSphere(transform.position, DistanceOfView);
 
         Gizmos.color = Color.red;
 

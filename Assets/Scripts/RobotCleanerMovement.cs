@@ -12,12 +12,14 @@ public class RobotCleanerMovement : MonoBehaviour
     private float _duration = 3f;
 
     private Vector3 _direction;
+    private Rigidbody _rb;
 
     void Awake()
     {
         _mainScript = GetComponent<RobotCleaner>();
         _wayFound = GetComponent<RobotCleanerWayFound>();
         _settings = GetComponent<RobotCleanerSettings>();
+        _rb = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
@@ -25,10 +27,13 @@ public class RobotCleanerMovement : MonoBehaviour
         if (!_settings.HaveWay)
         {
             _direction = _wayFound.FindWay();
+
+            _mainScript.Obstacle = null;
+            _mainScript._targets.Clear();
+
             _settings.HaveWay = true;
             
         }
-        
         if (_settings.HaveWay && !_settings.InMove)
         {
             if (_direction == null || _direction == Vector3.zero)
@@ -44,7 +49,7 @@ public class RobotCleanerMovement : MonoBehaviour
             {
                 _time += Time.deltaTime;
                 float t = _time / _duration;
-                transform.position = Vector3.Lerp(transform.position, _direction, t * _settings.Speed);
+                _rb.MovePosition(Vector3.Lerp(transform.position, _direction, t * _settings.Speed));
 
                 if (!_settings.InMove)
                 {

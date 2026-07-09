@@ -1,5 +1,7 @@
+using ModestTree;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RobotCleanerWayFound : MonoBehaviour
@@ -22,15 +24,15 @@ public class RobotCleanerWayFound : MonoBehaviour
         Vector3 maxCoords = transform.position + new Vector3(_distance, 0f, _distance);
         Vector3 minCoords = transform.position - new Vector3(_distance, 0f, _distance);
 
-        if (_mainScript._target != null)
+        if (_mainScript._targets.Any())
         {
-            return FindTarget();
+            return WayToTarget();
         }
-        if (_mainScript._obstacle != null)
+        if (_mainScript.Obstacle != null)
         {
             return WayAwayOfObstacle(minCoords, maxCoords);
         }
-        if (_mainScript._obstacle == null && _mainScript._target == null)
+        if (_mainScript.Obstacle == null && !_mainScript._targets.Any())
         {
             return RandomWay(minCoords, minCoords);
         }
@@ -39,34 +41,54 @@ public class RobotCleanerWayFound : MonoBehaviour
         { Debug.Log("error direction is zero"); }
         return direction;
     }
-
-    private Vector3 FindTarget()
+    private Vector3 WayToTarget()
     {
-        Vector3 target = _mainScript._target.transform.position;
-        Vector3 direction = new (target.x, transform.position.y, target.z);
-        _mainScript._target = null;
-        
-        Debug.Log($"Find Way to target - {direction}");
+        float currentDistance = 0;
+        Vector3 direction = Vector3.zero ;
 
+        foreach (var target in _mainScript._targets)
+        {
+            float distance = Vector3.Distance(target.transform.position, transform.position);
+            if (distance < currentDistance || currentDistance == 0)
+            {
+                currentDistance = distance;
+                direction = new(target.transform.position.x, transform.position.y, target.transform.position.z);
+            }
+        }
+
+        Debug.Log($"Find Way to closest target - {direction}");
         return direction;
 
     }
     private Vector3 WayAwayOfObstacle(Vector3 min, Vector3 max)
     {
-        Vector3 obstacle = _mainScript._obstacle.transform.position;
-        Vector3 distance = obstacle - transform.position;
+        Vector3 obstacle = _mainScript.Obstacle.transform.position;
+        Vector3 distance = transform.position - obstacle;
         float xCoord;
         float zCoord;
 
-        if (distance.x <= 0 )
-        { xCoord = Random.Range(transform.position.x, max.x); }
-        else { xCoord = Random.Range(min.x, transform.position.x); }
-        if (distance.z <= 0 )
-        { zCoord = Random.Range(transform.position.z, max.z); }
-        else { zCoord = Random.Range(min.z, transform.position.z); }
+        if (distance.x > 0 )
+        { xCoord = Random.Range(transform.position.x + 1, max.x); }
+        if (distance.x < 0 )
+        { xCoord = Random.Range(min.x, transform.position.x - 1); }
+        else 
+        {
+            if (obstacle.x < 0)
+            { xCoord = Random.Range(transform.position.x + 1, max.x);}
+            else { xCoord = Random.Range(min.x, transform.position.x - 1); }
+        }
+        if (distance.z > 0)
+        { zCoord = Random.Range(transform.position.z + 1, max.z); }
+        if (distance.z > 0)
+        { zCoord = Random.Range(min.z, transform.position.z - 1); }
+        else 
+        { 
+            if (obstacle.z < 0)
+            { zCoord = Random.Range(transform.position.z + 1, max.z);}
+            else { zCoord = Random.Range(min.z, transform.position.z - 1); }
+        }
 
-        Vector3 direction = new Vector3(xCoord, transform.position.y, zCoord);
-        _mainScript._obstacle = null;
+            Vector3 direction = new Vector3(xCoord, transform.position.y, zCoord);
 
         Debug.Log($"Find way away of obstacle - {direction} - {obstacle}");
 
@@ -85,6 +107,11 @@ public class RobotCleanerWayFound : MonoBehaviour
 
         return direction;
 
+    }
+
+    private float RandomCoords(float min, float max)
+    {
+        return Random.Range(min, max);
     }
 
 

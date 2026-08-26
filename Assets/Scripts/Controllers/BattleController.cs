@@ -52,8 +52,8 @@ public class BattleController : MonoBehaviour
             return;
         switch (_data.Status)
         {
-            case GameStatus.Select: _signal.Fire(GameStatus.Move); break;
-            case GameStatus.Move: _signal.Fire(GameStatus.Confirm); break;
+            case GameStatus.Select:/* _signal.Fire(GameStatus.Move)*/; break;
+            case GameStatus.Move: /*_signal.Fire(GameStatus.Confirm)*/; break;
             case GameStatus.Confirm: Debug.Log("Incorrect value"); break;
         }
         

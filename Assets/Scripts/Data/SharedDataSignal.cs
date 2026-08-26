@@ -48,7 +48,7 @@ public class SharedDataSignal : ISharedData
             {
                 Debug.Log($"New GameStatus: {value}");
                 _status = value;
-                _signal.Fire(value);
+                //_signal.Fire(value);
             }
         }
     }
